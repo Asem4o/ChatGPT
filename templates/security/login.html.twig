@@ -1,0 +1,81 @@
+{% extends 'base.html.twig' %}
+    {% block javascripts %}
+        <script>
+            window.fbAsyncInit = function() {
+                FB.init({
+                    appId      : '833019652081516', // Replace with your actual App ID
+                    cookie     : true,
+                    xfbml      : true,
+                    version    : 'v15.0' // Make sure this version matches the current version you need
+                });
+
+                FB.AppEvents.logPageView();
+            };
+
+            (function(d, s, id){
+                var js, fjs = d.getElementsByTagName(s)[0];
+                if (d.getElementById(id)) {return;}
+                js = d.createElement(s); js.id = id;
+                js.src = "https://connect.facebook.net/en_US/sdk.js";
+                fjs.parentNode.insertBefore(js, fjs);
+            }(document, 'script', 'facebook-jssdk'));
+
+            function facebookLogin() {
+                FB.login(function(response) {
+                    if (response.authResponse) {
+                        console.log('Authorization granted.');
+                        window.location.href = '/login/facebook/check'; // Redirect to your Symfony backend route
+                    } else {
+                        console.log('User cancelled login or did not fully authorize.');
+                    }
+                }, {scope: 'email,public_profile'});
+            }
+        </script>
+
+    {% endblock %}
+{% block body %}
+    <div class="main-container"> <!-- Flex container for the whole layout -->
+        <!-- Login form on the left -->
+        <div class="container-login" style="flex: 1;"> <!-- Reduced space for login -->
+            <div class="row justify-content-center">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h1 class="text-center mb-4">Login</h1>
+                            <form action="{{ path('login') }}" method="post">
+                                {% if error %}
+                                    <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                                {% endif %}
+                                <div class="mb-3">
+                                    <label for="email" class="form-label">Email:</label>
+                                    <input type="email" class="form-control" id="email" name="_username" value="{{ last_username }}" required autofocus>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="password" class="form-label">Password:</label>
+                                    <input type="password" class="form-control" id="password" name="_password" required>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Login</button>
+                                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                            </form>
+                            <button onclick="facebookLogin();" class="btn btn-facebook">Login with Facebook</button>
+
+
+                            <div class="mt-3">
+                                <a href="{{ path('register') }}">Don't have an account? Register here</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chat bot on the right -->
+        <div class="chat-container" style="flex: 3;"> <!-- Larger space for chat -->
+            <!-- Your chat bot content here -->
+            <div class="chat-header">
+                <h1>Chat with ChatGPT-4-turbo</h1>
+            </div>
+            <!-- Additional chat content would go here -->
+        </div>
+    </div>
+{% endblock %}

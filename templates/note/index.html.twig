@@ -1,0 +1,15 @@
+{% extends 'bar.html.twig' %}
+
+{% block title %}My Notes{% endblock %}
+
+{% block body %}
+    <h1>My Notes</h1>
+
+    <ul>
+        {% for note in notes %}
+            <li>{{ note.content }}</li>
+        {% endfor %}
+    </ul>
+
+    <a href="{{ path('note_create') }}">Add New Note</a>
+{% endblock %}

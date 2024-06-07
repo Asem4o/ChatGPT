@@ -1,0 +1,25 @@
+{% extends 'bar.html.twig' %}
+
+{% block body %}
+    <h1>Note</h1>
+
+    <table>
+        <tbody>
+        <tr>
+            <th>Id</th>
+            <td>{{ note.id }}</td>
+        </tr>
+        <tr>
+            <th>Content</th>
+            <td>{{ note.content }}</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('admin_note_index') }}">back to list</a>
+    <a href="{{ path('admin_note_edit', {'id': note.id}) }}">edit</a>
+    <form method="post" action="{{ path('admin_note_delete', {'id': note.id}) }}" style="display:inline-block">
+        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ note.id) }}">
+        <button class="btn">delete</button>
+    </form>
+{% endblock %}

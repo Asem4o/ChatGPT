@@ -1,0 +1,24 @@
+# config/services.yaml
+parameters:
+    chatgpt.api_key: '%env(CHATGPT_API_KEY)%'
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+    # Configuration for the FacebookService
+    App\Service\FacebookService:
+        arguments:
+            $appId: '%env(FACEBOOK_APP_ID)%'
+            $appSecret: '%env(FACEBOOK_APP_SECRET)%'
+    # Configuration for the ChatGPTService
+    App\Service\ChatGPTService:
+        arguments:
+            $apiKey: '%chatgpt.api_key%'
+
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Kernel.php'

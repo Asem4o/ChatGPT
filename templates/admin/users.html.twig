@@ -1,0 +1,25 @@
+{% extends 'bar.html.twig' %}
+
+{% block body %}
+    <h1>User Management</h1>
+    <table>
+        <thead>
+        <tr>
+            <th>Email</th>
+            <th>Roles</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for user in users %}
+            <tr>
+                <td>{{ user.email }}</td>
+                <td>{{ user.roles | join(', ') }}</td>
+                <td>
+                    <a href="{{ path('admin_user_edit', {'id': user.id}) }}">Edit Roles</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
